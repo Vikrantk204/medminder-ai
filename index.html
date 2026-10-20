@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101b2a">
+<title>'MedMinder' | Study companion</title>
+<style>
+:root{--bg:#0b1220;--panel:#111d2e;--panel2:#17263a;--line:#26374d;--text:#edf4fb;--muted:#a5b5c8;--mint:#8ce3cf;--mint2:#c4f6e9;--blue:#8ab9ff;--danger:#ffd6a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172b42 0,#0b1220 52%);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:1240px;margin:auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 2px 22px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--mint),#7baeff);color:#0b1724;font-size:23px;font-weight:900}
+.brand h1{font-size:19px;margin:0;letter-spacing:.2px}.brand p{margin:1px 0 0;color:var(--muted);font-size:12px}
+.pill{border:1px solid #315044;background:#112d2a;color:var(--mint2);border-radius:999px;padding:7px 12px;font-size:12px;white-space:nowrap}
+.hero{padding:23px 24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(120deg,rgba(140,227,207,.09),rgba(138,185,255,.07));margin-bottom:18px}
+.eyebrow{color:var(--mint);font-size:11px;text-transform:uppercase;letter-spacing:1.7px;font-weight:800}.hero h2{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:8px 0 10px;max-width:720px}.hero p{color:var(--muted);margin:0;max-width:760px}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px}
+.panel{background:rgba(17,29,46,.92);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.sidebar{padding:17px}.section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.3px;font-weight:800;margin:4px 0 10px}
+.subjects{display:grid;gap:7px}.subject{width:100%;text-align:left;background:transparent;border:1px solid transparent;color:var(--muted);padding:10px 11px;border-radius:11px;display:flex;align-items:center;gap:10px}.subject:hover,.subject.active{background:#1b3044;border-color:#2b4c5b;color:var(--text)}.subject .emoji{width:22px;text-align:center}
+.side-note{margin-top:20px;padding:13px;border-radius:14px;background:#17283a;color:var(--muted);font-size:12px}.side-note strong{display:block;color:var(--text);margin-bottom:5px}
+.main{display:grid;gap:18px;min-width:0}.chat-panel{display:flex;flex-direction:column;min-height:515px}.chat-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.chat-head h3{margin:0;font-size:16px}.chat-head p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.select{background:#142438;color:var(--text);border:1px solid #30445c;padding:9px 10px;border-radius:10px;max-width:170px}
+.messages{padding:19px;display:flex;flex-direction:column;gap:14px;flex:1;max-height:480px;overflow:auto}
+.msg{max-width:88%;padding:12px 14px;border-radius:15px;white-space:pre-wrap;overflow-wrap:anywhere}.msg.bot{align-self:flex-start;background:#192a3e;border:1px solid #2a3d53}.msg.user{align-self:flex-end;background:#1b403e;border:1px solid #326a60}.msg small{display:block;color:var(--mint);font-weight:800;font-size:10px;letter-spacing:1px;margin-bottom:5px}
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;padding:0 19px 15px}.suggestion{border:1px solid #31465c;background:#142438;color:#dbe9f7;border-radius:999px;padding:7px 11px;font-size:12px}.suggestion:hover{border-color:var(--mint);color:var(--mint2)}
+.composer{border-top:1px solid var(--line);padding:14px;display:flex;gap:9px}.composer input{min-width:0;flex:1;background:#0e1928;border:1px solid #30445c;border-radius:12px;padding:12px;color:var(--text);outline:none}.composer input:focus{border-color:var(--mint)}.primary{background:var(--mint);color:#08201c;border:0;border-radius:12px;padding:11px 17px;font-weight:800}.primary:hover{background:var(--mint2)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:18px}.tool{padding:18px}.tool h3{margin:0 0 5px;font-size:16px}.tool p{margin:0 0 14px;color:var(--muted);font-size:13px}.tool textarea{width:100%;min-height:90px;resize:vertical;background:#0e1928;border:1px solid #30445c;border-radius:12px;padding:11px;color:var(--text)}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.secondary{background:#17283a;border:1px solid #334960;color:var(--text);border-radius:10px;padding:9px 12px}.secondary:hover{border-color:var(--mint)}.output{margin-top:12px;padding:12px;border-radius:12px;background:#0e1928;border:1px solid #273a50;white-space:pre-wrap;min-height:38px;color:#d9e6f3;font-size:13px}
+.disclaimer{font-size:11px;color:#a5b5c8;padding:16px 4px 8px}.disclaimer strong{color:var(--danger)}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.sidebar{padding:14px}.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}.subject{font-size:12px;padding:8px}.side-note{margin-top:12px}.tools{grid-template-columns:1fr}.chat-panel{min-height:480px}.msg{max-width:96%}.app{padding:12px}.hero{padding:20px}.pill{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">+</div><div><h1>MedMinder</h1><p>A personal MBBS study companion</p></div></div>
+  <div class="pill">Year 1 · Learning mode</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Your study space</div>
+  <h2>Understand it. Remember it. Explain it.</h2>
+  <p>Ask a question, explore a subject, practise recall, or turn your own notes into a revision aid. Built for learning, not replacing medical references or teachers.</p>
+</section>
+<div class="layout">
+  <aside class="panel sidebar">
+    <div class="section-label">Choose a subject</div>
+    <div class="subjects" id="subjects">
+      <button class="subject active" data-subject="General"><span class="emoji">✦</span> General</button>
+      <button class="subject" data-subject="Anatomy"><span class="emoji">🦴</span> Anatomy</button>
+      <button class="subject" data-subject="Physiology"><span class="emoji">🫀</span> Physiology</button>
+      <button class="subject" data-subject="Biochemistry"><span class="emoji">🧬</span> Biochemistry</button>
+      <button class="subject" data-subject="Histology"><span class="emoji">🔬</span> Histology</button>
+      <button class="subject" data-subject="Embryology"><span class="emoji">🌱</span> Embryology</button>
+      <button class="subject" data-subject="Medical terminology"><span class="emoji">📚</span> Terminology</button>
+    </div>
+    <div class="side-note"><strong>How to get a better answer</strong>Include the topic, what confuses you, and the format you need: simple explanation, viva, MCQ, or exam answer.</div>
+  </aside>
+  <main class="main">
+    <section class="panel chat-panel">
+      <div class="chat-head"><div><h3 id="chatTitle">Study chat</h3><p>AI study chat · server-connected</p></div><button class="secondary" id="clearChat">Clear chat</button></div>
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="msg bot"><small>MEDMINDER</small>Hi! I’m your study companion. Choose a subject and ask a question. Ask a question and MedMinder will send it to the configured AI model.</div>
+      </div>
+      <div class="suggestions">
+        <button class="suggestion" data-prompt="Explain homeostasis in simple terms">Explain homeostasis</button>
+        <button class="suggestion" data-prompt="What is the difference between an artery and a vein?">Artery vs vein</button>
+        <button class="suggestion" data-prompt="Give me 5 first-year MBBS revision questions">Quick revision quiz</button>
+      </div>
+      <form class="composer" id="chatForm"><input id="question" autocomplete="off" placeholder="Ask a medical study question…" aria-label="Ask a question"><button class="primary" type="submit">Ask ↗</button></form>
+    </section>
+    <div class="tools">
+      <section class="panel tool">
+        <h3>📝 Turn notes into revision</h3><p>Paste a short section of notes. The demo creates a basic study outline in your browser.</p>
+        <textarea id="notes" placeholder="Paste lecture notes here…"></textarea>
+        <div class="row"><button class="primary" id="makeNotes">Make revision outline</button><button class="secondary" id="saveNotes">Save notes</button></div>
+        <div class="output" id="notesOutput">Your outline will appear here.</div>
+      </section>
+      <section class="panel tool">
+        <h3>🧠 Active recall</h3><p>Practise first-year topics. Answer before revealing the explanation.</p>
+        <div id="quizQuestion" class="output">What is the main function of haemoglobin?</div>
+        <div class="row"><button class="primary" id="reveal">Reveal answer</button><button class="secondary" id="nextQuiz">Next question</button></div>
+        <div class="output" id="quizAnswer">Try answering aloud first, then reveal the answer.</div>
+      </section>
+    </div>
+  </main>
+</div>
+<div class="disclaimer"><strong>Educational disclaimer:</strong> This is an educational AI prototype, not a validated medical reference. Verify facts with recommended textbooks, faculty, and trusted medical sources. Do not enter patient-identifiable information or use this prototype for diagnosis or treatment decisions.</div>
+</div>
+<script>
+const subjectButtons=[...document.querySelectorAll('.subject')];
+let currentSubject='General';
+const messages=document.getElementById('messages');
+const input=document.getElementById('question');
+const chatTitle=document.getElementById('chatTitle');
+
+ function addMessage(role, text){
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+
+  const label = document.createElement('small');
+  label.textContent = role === 'user' ? 'YOU' : 'MEDMINDER';
+  el.appendChild(label);
+
+  const content = document.createElement('div');
+  content.style.whiteSpace = 'pre-wrap';
+  content.textContent = text;
+  el.appendChild(content);
+
+  messages.appendChild(el);
+  messages.scrollTop = messages.scrollHeight;
+}
+subjectButtons.forEach(btn=>btn.addEventListener('click',()=>{subjectButtons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSubject=btn.dataset.subject;chatTitle.textContent=currentSubject==='General'?'Study chat':currentSubject+' study chat';addMessage('bot','Subject set to '+currentSubject+'. Ask a question or choose a suggested prompt. This demo may not know every topic.')}));
+const sampleAnswers=[
+{keys:['homeostasis'],answer:'HOMEOSTASIS\nHomeostasis is the process by which the body keeps its internal environment relatively stable even when outside conditions change.\n\nExample: When body temperature rises, sweating helps lose heat. When temperature falls, shivering produces heat.\n\nExam tip: Mention the regulated variable, receptors, control centre, and effectors. Negative feedback usually moves a variable back toward its set range.'},
+{keys:['artery','vein'],answer:'ARTERY vs VEIN\n• Arteries carry blood away from the heart; veins carry blood toward the heart.\n• Arteries generally have thicker, more muscular walls because pressure is higher.\n• Veins generally have thinner walls, larger lumens, and many contain valves to reduce backflow.\n• Important exception: pulmonary arteries carry deoxygenated blood, while pulmonary veins carry oxygenated blood.'},
+{keys:['haemoglobin','hemoglobin'],answer:'Haemoglobin is the oxygen-carrying protein in red blood cells. Its haem groups contain iron, which binds oxygen reversibly. It also contributes to carbon dioxide transport and buffering of blood pH.'},
+{keys:['mitochondria','atp'],answer:'Mitochondria generate much of the cell’s ATP through aerobic metabolism, including the citric acid cycle and oxidative phosphorylation. They also participate in calcium handling and programmed cell death.'},
+{keys:['osmosis'],answer:'Osmosis is the net movement of water across a selectively permeable membrane from a region of higher water potential to lower water potential. In physiology, tonicity helps predict how cells change volume in solutions.'},
+{keys:['negative feedback'],answer:'Negative feedback opposes a change and helps maintain a variable near its regulated range. Example: increased blood glucose stimulates insulin release, which helps lower blood glucose. Do not confuse it with positive feedback, which amplifies a change.'}
+];
+const conversationHistory=[];
+async function askAI(q){
+  addMessage('user',q);
+  const pending=document.createElement('div');pending.className='msg bot';pending.textContent='Thinking…';messages.appendChild(pending);messages.scrollTop=messages.scrollHeight;
+  try{
+    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,subject:currentSubject,history:conversationHistory.slice(-8)})});
+    const data=await response.json();pending.remove();
+    if(!response.ok)throw new Error(data.detail||'Request failed');
+    addMessage('bot',data.answer+'\\n\\nEducational aid only. Verify important facts with recommended textbooks and faculty.');
+    conversationHistory.push({role:'user',content:q},{role:'assistant',content:data.answer});
+    if(conversationHistory.length>8)conversationHistory.splice(0,conversationHistory.length-8);
+  }catch(err){pending.remove();addMessage('bot','Could not get an AI answer: '+err.message+'\\nCheck that the Python server is running and the API key is configured.');}
+}
+document.getElementById('chatForm').addEventListener('submit',e=>{e.preventDefault();const q=input.value.trim();if(!q)return;input.value='';askAI(q);input.focus()});
+
+document.querySelectorAll('.suggestion').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.prompt;document.getElementById('chatForm').requestSubmit()}));
+document.getElementById('clearChat').addEventListener('click',()=>{messages.innerHTML='';addMessage('bot','Chat cleared. Choose a subject and ask a question. Remember: this is an offline demo, not a live AI model.')});
+document.getElementById('makeNotes').addEventListener('click',()=>{const raw=document.getElementById('notes').value.trim();const out=document.getElementById('notesOutput');if(!raw){out.textContent='Paste some notes first.';return}const sentences=raw.split(/(?<=[.!?])\s+/).filter(Boolean);out.textContent='REVISION OUTLINE\n\nKey points:\n'+sentences.slice(0,8).map((s,i)=>(i+1)+'. '+s).join('\n')+'\n\nSelf-test prompt: Explain the main idea in your own words, then check the source notes for anything you missed.'});
+document.getElementById('saveNotes').addEventListener('click',()=>{const value=document.getElementById('notes').value;try{localStorage.setItem('medminder-notes',value);document.getElementById('notesOutput').textContent='Notes saved in this browser on this device.'}catch(e){document.getElementById('notesOutput').textContent='Browser storage was unavailable. Copy your notes somewhere safe.'}});
+try{const saved=localStorage.getItem('medminder-notes');if(saved)document.getElementById('notes').value=saved}catch(e){}
+const quiz=[
+{q:'What is the main function of haemoglobin?',a:'To bind and transport oxygen in red blood cells. It also contributes to carbon dioxide transport and buffering.'},
+{q:'What is homeostasis?',a:'Regulation of the internal environment within a suitable range despite external changes.'},
+{q:'Which organelle produces most ATP during aerobic respiration?',a:'The mitochondrion, particularly through oxidative phosphorylation at the inner mitochondrial membrane.'},
+{q:'What is the basic functional unit of the kidney?',a:'The nephron.'},
+{q:'Which direction does an artery carry blood?',a:'Away from the heart. Arteries are defined by direction, not oxygen content.'}
+];let qi=0;document.getElementById('reveal').addEventListener('click',()=>{document.getElementById('quizAnswer').textContent=quiz[qi].a});document.getElementById('nextQuiz').addEventListener('click',()=>{qi=(qi+1)%quiz.length;document.getElementById('quizQuestion').textContent=quiz[qi].q;document.getElementById('quizAnswer').textContent='Try answering aloud first, then reveal the answer.'});
+</script>
+</body>
+</html>
